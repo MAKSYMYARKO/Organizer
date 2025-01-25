@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 calendarTasks.appendChild(calendarItem);
             }
 
-            // Отображение заметки (если есть)
+
             if (task.note) {
                 const noteItem = document.createElement('li');
                 noteItem.textContent = `${task.text} - ${task.note}`;
@@ -93,13 +93,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const date = new Date();
         date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000)); 
         const expires = `expires=${date.toUTCString()}`;
+        const encodedTasks = encodeURIComponent(JSON.stringify(tasks));
         document.cookie = `tasks=${JSON.stringify(tasks)}; ${expires}; path=/`;
     }
 
     function loadTasksFromCookies() {
         const match = document.cookie.match(/tasks=([^;]+)/);
-        return match ? JSON.parse(match[1]) : [];
+        if (match) {
+            try {
+                // Decode the cookie value and parse the JSON
+                return JSON.parse(decodeURIComponent(match[1]));
+            } catch (e) {
+                console.error("Error parsing tasks from cookies:", e);
+                return [];
+            }
+        } else {
+            return [];
+        }
     }
+    
 
     renderTasks();
 });
