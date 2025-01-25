@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Organizer</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/script.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <h1 class="logo">My Organizer</h1>
+        <nav>
+            <ul class="nav">
+                <li><button data-section="tasks">Tasks</button></li>
+                <li><button data-section="calendar">Calendar</button></li>
+                <li><button data-section="notes">Notes</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content" class="content">
+        <!-- Tasks Section -->
+        <section id="tasks" class="section active">
+            <h2>Tasks</h2>
+            <form id="task-form">
+                <input type="text" id="task-input" placeholder="Add a new task..." required>
+                <input type="date" id="task-date">
+                <textarea id="task-note" placeholder="Add a note..."></textarea>
+                <button type="submit">Add Task</button>
+            </form>
+            <ul id="task-list" class="task-list"></ul>
+        </section>
+
+        <!-- Calendar Section -->
+        <section id="calendar" class="section">
+            <h2>Calendar</h2>
+            <ul id="calendar-tasks" class="calendar-list"></ul>
+        </section>
+
+        <!-- Notes Section -->
+        <section id="notes" class="section">
+            <h2>Notes</h2>
+            <ul id="notes-list" class="notes-list"></ul>
+        </section>
+    </main>
+</body>
+</html>
