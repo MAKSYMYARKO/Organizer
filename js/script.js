@@ -89,28 +89,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveTasksToCookies() {
-        const daysToExpire = 30; 
+        const daysToExpire = 365;  
         const date = new Date();
         date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000)); 
         const expires = `expires=${date.toUTCString()}`;
-        const encodedTasks = encodeURIComponent(JSON.stringify(tasks));
-        document.cookie = `tasks=${JSON.stringify(tasks)}; ${expires}; path=/`;
+        const encodedTasks = encodeURIComponent(JSON.stringify(tasks));  
+        document.cookie = `tasks=${encodedTasks}; ${expires}; path=/`;  
     }
-
+    
     function loadTasksFromCookies() {
         const match = document.cookie.match(/tasks=([^;]+)/);
         if (match) {
             try {
-                // Decode the cookie value and parse the JSON
                 return JSON.parse(decodeURIComponent(match[1]));
             } catch (e) {
-                console.error("Error parsing tasks from cookies:", e);
+                console.error("Error:", e);
                 return [];
             }
         } else {
             return [];
         }
     }
+    
     
 
     renderTasks();
