@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let tasks = loadTasksFromCookies();
 
-    // Навигация по секциям
     navButtons.forEach(button => {
         button.addEventListener('click', () => {
             const sectionId = button.getAttribute('data-section');
@@ -23,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Добавление задачи
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
@@ -44,14 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
         taskNote.value = '';
     });
 
-    // Отображение задач
     function renderTasks() {
         taskList.innerHTML = '';
         calendarTasks.innerHTML = '';
         notesList.innerHTML = '';
 
         tasks.forEach((task, index) => {
-            // Отображение задачи в списке задач
+
             const taskItem = document.createElement('li');
             taskItem.classList.add('task-item');
 
@@ -61,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             taskList.appendChild(taskItem);
 
-            // Отображение задачи в календаре
             if (task.date) {
                 const calendarItem = document.createElement('li');
                 calendarItem.textContent = `${task.date}: ${task.text}`;
@@ -76,11 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Привязка событий удаления
         attachDeleteHandlers();
     }
 
-    // Удаление задач
     function attachDeleteHandlers() {
         const deleteButtons = document.querySelectorAll('.delete-task');
 
@@ -94,9 +88,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Работа с cookies
     function saveTasksToCookies() {
-        document.cookie = `tasks=${JSON.stringify(tasks)}; path=/`;
+        const daysToExpire = 30; 
+        const date = new Date();
+        date.setTime(date.getTime() + (daysToExpire * 24 * 60 * 60 * 1000)); 
+        const expires = `expires=${date.toUTCString()}`;
+        document.cookie = `tasks=${JSON.stringify(tasks)}; ${expires}; path=/`;
     }
 
     function loadTasksFromCookies() {
