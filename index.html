@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Organizer</title>
+    <!-- Css -->
     <link rel="stylesheet" href="./css/style.css">
+    <!-- JS -->
     <script src="./js/script.js" defer></script>
+    <!-- flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
+    <title>Personal Organizer</title>
 </head>
 <body>
     <header class="header">
         <h1 class="logo">My Organizer</h1>
         <nav>
             <ul class="nav">
-                <li><button data-section="tasks">Tasks</button></li>
-                <li><button data-section="calendar">Calendar</button></li>
-                <li><button data-section="notes">Notes</button></li>
+                <!-- Navigation can be added here -->
             </ul>
         </nav>
     </header>
@@ -24,21 +28,27 @@
             <h2>Tasks</h2>
             <form id="task-form">
                 <input type="text" id="task-input" placeholder="Add a new task..." required>
-                <input type="date" id="task-date">
-                <textarea id="task-note" placeholder="Add a note..."></textarea>
+                <input type="datetime-local" id="task-date" placeholder="Select DateTime">
+
+                <!-- Priority Selection -->
+                <div class="priority-section">
+                    <label>
+                        <input type="radio" name="priority" value="low" checked>
+                        Low Priority
+                    </label>
+                    <label>
+                        <input type="radio" name="priority" value="medium">
+                        Medium Priority
+                    </label>
+                    <label>
+                        <input type="radio" name="priority" value="high">
+                        High Priority
+                    </label>
+                </div>
+
                 <button type="submit">Add Task</button>
             </form>
             <ul id="task-list" class="task-list"></ul>
-        </section>
-
-        <section id="calendar" class="section">
-            <h2>Calendar</h2>
-            <ul id="calendar-tasks" class="calendar-list"></ul>
-        </section>
-
-        <section id="notes" class="section">
-            <h2>Notes</h2>
-            <ul id="notes-list" class="notes-list"></ul>
         </section>
     </main>
 </body>

@@ -1,37 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const navButtons = document.querySelectorAll('.nav button');
-    const sections = document.querySelectorAll('.section');
-
     const taskForm = document.getElementById('task-form');
     const taskInput = document.getElementById('task-input');
     const taskDate = document.getElementById('task-date');
-    const taskNote = document.getElementById('task-note');
     const taskList = document.getElementById('task-list');
-    const calendarTasks = document.getElementById('calendar-tasks');
-    const notesList = document.getElementById('notes-list');
 
     let tasks = loadTasksFromCookies();
-
-    navButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const sectionId = button.getAttribute('data-section');
-
-            sections.forEach(section => section.classList.remove('active'));
-            const activeSection = document.getElementById(sectionId);
-            activeSection.classList.add('active');
-        });
-    });
 
     taskForm.addEventListener('submit', (e) => {
         e.preventDefault();
 
         const taskText = taskInput.value.trim();
         const date = taskDate.value;
-        const note = taskNote.value.trim();
+        const priority = document.querySelector('input[name="priority"]:checked').value;
 
         if (taskText === '') return;
 
-        const task = { text: taskText, date, note };
+        const task = { text: taskText, date, priority };
         tasks.push(task);
         saveTasksToCookies();
 
@@ -39,37 +23,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         taskInput.value = '';
         taskDate.value = '';
-        taskNote.value = '';
     });
 
     function renderTasks() {
         taskList.innerHTML = '';
-        calendarTasks.innerHTML = '';
-        notesList.innerHTML = '';
 
         tasks.forEach((task, index) => {
-
             const taskItem = document.createElement('li');
             taskItem.classList.add('task-item');
 
             taskItem.innerHTML = `
-                ${task.text}
+                ${task.text} ${task.date ? `(${task.date})` : ''} - Priority: ${task.priority}
                 <button class="delete-task" data-index="${index}">Delete</button>
             `;
             taskList.appendChild(taskItem);
-
-            if (task.date) {
-                const calendarItem = document.createElement('li');
-                calendarItem.textContent = `${task.date}: ${task.text}`;
-                calendarTasks.appendChild(calendarItem);
-            }
-
-
-            if (task.note) {
-                const noteItem = document.createElement('li');
-                noteItem.textContent = `${task.text} - ${task.note}`;
-                notesList.appendChild(noteItem);
-            }
         });
 
         attachDeleteHandlers();
@@ -96,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const encodedTasks = encodeURIComponent(JSON.stringify(tasks));  
         document.cookie = `tasks=${encodedTasks}; ${expires}; path=/`;  
     }
-    
+
     function loadTasksFromCookies() {
         const match = document.cookie.match(/tasks=([^;]+)/);
         if (match) {
@@ -110,8 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return [];
         }
     }
-    
-    
+
+    // Initialize flatpickr for datetime input
+    flatpickr("#task-date", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        altInput: true,
+        disableMobile: true,
+        placeholder: "Select DateTime",
+    });
 
     renderTasks();
 });
